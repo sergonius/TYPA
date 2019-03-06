@@ -44,7 +44,7 @@ class Typa {
 	}
 
 	stop() {
-		clearTimeout(this.timeout());
+		clearTimeout(this.timeout);
 	}
 
 	typing(

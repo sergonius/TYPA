@@ -1,6 +1,6 @@
 # Typa
 
-Handle all clicks in a single listener
+> Make words type themselves
 
 ## Install
 

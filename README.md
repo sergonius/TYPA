@@ -4,7 +4,11 @@ Handle all clicks in a single listener
 
 ## Install
 
-`yarn add typa`
+```bash
+npm install --save @sergonius/typa
+# or
+yarn add @sergonius/typa
+```
 
 ## Example
 
@@ -15,7 +19,7 @@ Handle all clicks in a single listener
 +
 
 ```javascript
-import Typa from 'typa';
+import Typa from '@sergonius/typa';
 
 const typa = new Typa({
 	strings: ['do', 'your', 'thing'], // The strings to alternate between

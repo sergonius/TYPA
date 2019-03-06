@@ -1,0 +1,5 @@
+node_modules
+/build/compiled
+/typa.d.ts
+/typa.js
+.history

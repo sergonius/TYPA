@@ -33,3 +33,7 @@ const typa = new Typa({
 
 typa.start();
 ```
+
+# BTW
+
+There is also a React version [typa-react](https://github.com/sergonius/typa-react)

@@ -11,152 +11,87 @@ interface Typa {
 	};
 	container: HTMLElement;
 	timeout: any;
+	elem: Element;
+	currentWord: number;
+	currentLetter: number;
+	reverse: boolean;
 }
 class Typa {
 	constructor(opts) {
+		const { containerSelector, typerClass, cursorClass } = opts;
 		this.id = +new Date();
 		this.opts = opts;
-	}
-
-	start() {
-		const {
-			strings,
-			speed,
-			delay,
-			loop,
-			containerSelector,
-			typerClass,
-			cursorClass,
-		} = this.opts;
-
 		this.container = document.querySelector(containerSelector);
+		this.currentWord = 0;
+		this.currentLetter = 0;
 
 		if (this.container) {
 			this.container.innerHTML = `<span class="${typerClass}"></span>${
 				cursorClass ? `<span class="${cursorClass}" />` : ''
 			}`;
 
-			const typer = document.querySelector(`.${typerClass}`);
-			const { strings, speed, delay, loop } = this.opts;
-
-			this.typing(typer, strings, 0, 0, speed, delay, loop);
+			this.elem = document.querySelector(`.${typerClass}`);
+		} else {
+			console.error(`No matching element found for ${containerSelector}`);
 		}
+	}
+
+	start() {
+		this.typing();
 	}
 
 	stop() {
 		clearTimeout(this.timeout);
 	}
 
-	typing(
-		elem: Element,
-		strings: Array<string>,
-		currentLetter: number,
-		currentWord: number,
-		speed: number,
-		delay: number,
-		loop: boolean,
-		reverse?: boolean,
-	) {
-		if (!reverse) {
-			if (strings[currentWord]) {
-				if (currentLetter < strings[currentWord].length) {
-					elem.innerHTML = strings[currentWord].substring(0, currentLetter + 1);
-					currentLetter += 1;
+	typing() {
+		const { strings, speed, delay, loop } = this.opts;
+		let ms = speed;
 
-					this.timeout = setTimeout(() => {
-						this.typing(
-							elem,
-							strings,
-							currentLetter,
-							currentWord,
-							speed,
-							delay,
-							loop,
-						);
-					}, speed);
+		if (!this.reverse) {
+			if (strings[this.currentWord]) {
+				if (this.currentLetter < strings[this.currentWord].length) {
+					this.elem.innerHTML = strings[this.currentWord].substring(
+						0,
+						this.currentLetter + 1,
+					);
+					this.currentLetter += 1;
 				} else {
-					this.timeout = setTimeout(() => {
-						this.typing(
-							elem,
-							strings,
-							currentLetter,
-							currentWord,
-							speed,
-							delay,
-							loop,
-							true,
-						);
-					}, delay);
+					this.reverse = true;
+					ms = delay;
 				}
 			} else {
-				currentWord = 0;
-
-				this.typing(
-					elem,
-					strings,
-					currentLetter,
-					currentWord,
-					speed,
-					delay,
-					loop,
-				);
+				this.currentWord = 0;
+				ms = 0;
 			}
 		} else {
-			if (currentLetter > 0) {
+			if (this.currentLetter > 0) {
 				if (loop) {
-					elem.innerHTML = strings[currentWord].substring(0, currentLetter - 1);
-					currentLetter -= 1;
-
-					this.timeout = setTimeout(() => {
-						this.typing(
-							elem,
-							strings,
-							currentLetter,
-							currentWord,
-							speed,
-							delay,
-							loop,
-							reverse,
-						);
-					}, speed);
+					this.elem.innerHTML = strings[this.currentWord].substring(
+						0,
+						this.currentLetter - 1,
+					);
+					this.currentLetter -= 1;
+					this.reverse = true;
 				} else {
-					if (strings.length - 1 !== currentWord) {
-						elem.innerHTML = strings[currentWord].substring(
+					if (strings.length - 1 !== this.currentWord) {
+						this.elem.innerHTML = strings[this.currentWord].substring(
 							0,
-							currentLetter - 1,
+							this.currentLetter - 1,
 						);
-						currentLetter -= 1;
-
-						this.timeout = setTimeout(() => {
-							this.typing(
-								elem,
-								strings,
-								currentLetter,
-								currentWord,
-								speed,
-								delay,
-								loop,
-								reverse,
-							);
-						}, speed);
+						this.currentLetter -= 1;
+						this.reverse = true;
 					}
 				}
 			} else {
-				currentWord += 1;
-
-				this.timeout = setTimeout(() => {
-					this.typing(
-						elem,
-						strings,
-						currentLetter,
-						currentWord,
-						speed,
-						delay,
-						loop,
-					);
-				}, speed);
+				this.currentWord += 1;
+				this.reverse = false;
 			}
 		}
+
+		this.timeout = setTimeout(() => {
+			this.typing();
+		}, ms);
 	}
 }
 

@@ -50,11 +50,11 @@ class Typa {
 	typing(
 		elem: Element,
 		strings: Array<string>,
-		currentLetter,
-		currentWord,
-		speed,
-		delay,
-		loop,
+		currentLetter: number,
+		currentWord: number,
+		speed: number,
+		delay: number,
+		loop: boolean,
 		reverse?: boolean,
 	) {
 		if (!reverse) {

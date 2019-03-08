@@ -1,14 +1,15 @@
+interface Settings {
+	strings: Array<string>;
+	speed: number;
+	delay: number;
+	loop?: boolean;
+	containerSelector: string;
+	typerClass?: string;
+	cursorClass?: string;
+}
 interface Typa {
 	id: number;
-	opts: {
-		strings: Array<string>;
-		speed: number;
-		delay: number;
-		loop: boolean;
-		containerSelector: string;
-		typerClass: string;
-		cursorClass: string;
-	};
+	opts: Settings;
 	container: HTMLElement;
 	timeout: any;
 	elem: Element;
@@ -17,7 +18,7 @@ interface Typa {
 	reverse: boolean;
 }
 class Typa {
-	constructor(opts) {
+	constructor(opts: Settings) {
 		const { containerSelector, typerClass, cursorClass } = opts;
 		this.id = +new Date();
 		this.opts = opts;

@@ -16,7 +16,7 @@ yarn add @sergonius/typa
 <div class="typa"></div>
 ```
 
-+
+
 
 ```javascript
 import Typa from '@sergonius/typa';
